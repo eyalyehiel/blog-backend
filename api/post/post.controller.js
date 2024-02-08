@@ -1,4 +1,5 @@
 const postService = require('./post.service.js');
+const userService = require('../user/user.service.js')
 const socketService = require('../../services/socket.service.js');
 
 const logger = require('../../services/logger.service.js');
@@ -69,16 +70,22 @@ async function removePost(req, res) {
     }
 }
 
-async function addPostMsg(req, res) {
-    const { loggedinUser } = req;
+async function addPostComment(req, res) {
+    // const { loggedinUser } = req;
+    // console.log(loggedinUser);
     try {
+        const loggedinUser = await userService.getById(req.loggedinUser._id)
         const postId = req.params.id;
-        const msg = {
-            txt: req.body.txt,
-            by: loggedinUser,
+        const comment = {
+            body: req.body.body,
+            author: {
+                username: loggedinUser.username,
+                _id: loggedinUser._id,
+                imgUrl: loggedinUser.imgUrl
+            },
         };
-        const savedMsg = await postService.addPostMsg(postId, msg);
-        res.json(savedMsg);
+        const savedComment = await postService.addPostComment(postId, comment);
+        res.json(savedComment);
     } catch (err) {
         logger.error('Failed to update post', err);
         res.status(500).send({ err: 'Failed to update post' });
@@ -106,6 +113,6 @@ module.exports = {
     addPost,
     updatePost,
     removePost,
-    addPostMsg,
+    addPostComment,
     removePostMsg,
 };

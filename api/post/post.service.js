@@ -83,15 +83,16 @@ async function update(post) {
     }
 }
 
-async function addPostMsg(postId, msg) {
+async function addPostComment(postId, comment) {
     try {
-        msg.id = utilService.makeId()
+        comment._id = utilService.makeId()
+        comment.createdAt = new Date()
         const collection = await dbService.getCollection("post")
         await collection.updateOne(
             { _id: ObjectId(postId) },
-            { $push: { msgs: msg } }
+            { $push: { comments: comment } }
         )
-        return msg
+        return comment
     } catch (err) {
         logger.error(`cannot add post msg ${postId}`, err)
         throw err
@@ -180,6 +181,6 @@ module.exports = {
     getById,
     add,
     update,
-    addPostMsg,
+    addPostComment,
     removePostMsg,
 }

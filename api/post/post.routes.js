@@ -10,7 +10,7 @@ const {
     addPost,
     updatePost,
     removePost,
-    addPostMsg,
+    addPostComment,
     removePostMsg,
     addManyPosts
 } = require('./post.controller');
@@ -25,7 +25,7 @@ router.put('/:id', requireAuth, updatePost);
 router.delete('/:id', requireAuth, removePost);
 // router.delete('/:id', requireAuth, requireAdmin, removePost)
 
-router.post('/:id/msg', requireAuth, addPostMsg);
+router.post('/:id/comment', requireAuth, addPostComment);
 router.delete('/:id/msg/:msgId', requireAuth, removePostMsg);
 
 module.exports = router;
