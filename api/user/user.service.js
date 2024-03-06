@@ -79,7 +79,8 @@ async function update(user) {
             _id: ObjectId(user._id), // needed for the returnd obj
             username: user.username,
             imgUrl: user.imgUrl,
-            posts: user.posts
+            posts: user.posts,
+            theme: user.theme
         };
         const collection = await dbService.getCollection('user');
         await collection.updateOne(
@@ -102,7 +103,8 @@ async function add(user) {
             email: user.email,
             imgUrl: user.imgUrl,
             posts:[],
-            createdAt: new Date()
+            createdAt: new Date(),
+            theme: 'light',
         };
         const collection = await dbService.getCollection('user');
         await collection.insertOne(userToAdd);
